@@ -33,6 +33,7 @@ conda activate cenv
 The code performs the following...
 
 Split the Data into Training and Testing Sets
+
 Open the starter code notebook and then use it to complete the following steps.
 
 Read the lending_data.csv data from the Resources folder into a Pandas DataFrame.
@@ -55,62 +56,109 @@ Use logistic regression to complete the following steps:
 
 	Evaluate the model’s performance by doing the following:
 
-		Calculate the accuracy score of the model.
+		Calculate and print the accuracy score of the model.
 
-		![](LRM-BalancedAccuracyModel.png)
+			balanced_accuracy_score(y_test, testing_predict)
+			
+			0.9519422040258451
+
+		Generates a confusion matrix.
+
+			confusion_matrix(y_test, testing_predict)
+
+			array([[18652,    87],
+       			       [   59,   586]])
+
+		Prints the classification report.
+
+			print(classification_report(y_test, testing_predict))
+
+			              precision    recall  f1-score   support
+
+			           0       1.00      1.00      1.00     18739
+           			   1       0.87      0.91      0.89       645
+
+			    accuracy                           0.99     19384
+			   macro avg       0.93      0.95      0.94     19384
+			weighted avg       0.99      0.99      0.99     19384
 		
-		Generate a confusion matrix.
-
-		Print the classification report.
-
-		Answer the following question: 
+		Answers the following question: 
 			
 			How well does the logistic regression model predict both the 0 (healthy loan) and 1 (high-risk loan) labels?
 
+			Looking at the confusion matrix - Number of False Positives and False Negatives are high and will need to be reduced which means the data is 
+			in-correctly predicted. 
+
 ##Predict a Logistic Regression Model with Resampled Training Data
 
-Did you notice the small number of high-risk loan labels? 
-
-Perhaps, a model that uses resampled data will perform better. You’ll thus resample the training data and then reevaluate the model. Specifically, you’ll use RandomOverSampler.
+Identifies that there are a small number of high-risk loan labels. So, uses RandomOverSampler model that uses resampled training data-set to re-evaluate and see if it performs better. 
 
 To do so, complete the following steps:
 
 	Use the RandomOverSampler module from the imbalanced-learn library to resample the data. Be sure to confirm that the labels have an equal number of data points.
 
+		random_oversampler = RandomOverSampler(random_state=1)
+		
 	Use the LogisticRegression classifier and the resampled data to fit the model and make predictions.
 
-	Evaluate the model’s performance by doing the following:
+		ros_X, ros_y = random_oversampler.fit_resample(X_train,y_train)
 
+		ros_y.value_counts()
+
+		0    56297
+		1    56297
+
+	Evaluate the model’s performance by doing the following:
+		
 	Calculate the accuracy score of the model.
 
+		balanced_accuracy_score(y_test,lrpredict)
+
+		0.9949528219346048
+		
 	Generate a confusion matrix.
 
-		Print the classification report.
+		confusion_matrix(y_test, lrpredict)
 
-			Answer the following question: 
+		array([[18637,   102],
+		       [    3,   642]])
 
-				How well does the logistic regression model, fit with oversampled data, predict both the 0 (healthy loan) and 1 (high-risk loan) labels?
+	Print the classification report.
 
-## Write a Credit Risk Analysis Report
+	print(classification_report(y_test, lrpredict))
 
-For this section, you’ll write a brief report that includes a summary and an analysis of the performance of both machine learning models that you used in this challenge. You should write this report as the README.md file included in your GitHub repository.
+	              precision    recall  f1-score   support
 
-Structure your report by using the report template that Starter_Code.zip includes, and make sure that it contains the following:
+	           0       1.00      0.99      1.00     18739
+        	   1       0.86      1.00      0.92       645
 
-An overview of the analysis: Explain the purpose of this analysis.
-The results: Using bulleted lists, describe the balanced accuracy scores and the precision and recall scores of both machine learning models.
+	    accuracy                           0.99     19384
+	    macro avg      0.93      0.99      0.96     19384
+	weighted avg       1.00      0.99      0.99     19384
+	
+	Answer the following question: 
 
-A summary: Summarize the results from the machine learning models. Compare the two versions of the dataset predictions. Include your recommendation for the model to use, if any, on the original vs. the resampled data. If you don’t recommend either model, justify your reasoning.
- 
+	How well does the logistic regression model, fit with oversampled data, predict both the 0 (healthy loan) and 1 (high-risk loan) labels?
+
+	
+	Predictions are better when Logisitic Regression Model is fit with oversampled data than the original data, False Negatives are highly reduced.
+	Hence predicting with oversampled data is recommended as it reduces the overall number of incorrect predictions.
+
+	However, in both the cases False Positives are high and are even high when predicted with oversampleddata which still remains to be reduced.
+
 ## Final Conclusion
 
+Either of the models are not recommended..
+
+Both the models have False Positives and False Negatives. When predicted with oversampled data though the False Negatives are much reduced, the False Positives have increased so, using any model for can get in-correct predictions. However, comparitively OverSampledData has less number of False Negatives which means more number of predictions are correct. Especially, False Positives are a major concern.
 
 ## Pre-requisites
 
 Ensure all the below csv files are existing on the OS from where you are executing the code. You will need to run "Jupyter notebook" from the same directory (Module10-HW) where all the files exist. Below is the list of files which need to exist for the successful execution of the code.
 
-crypto_market_data.csv
-crypto_investments.ipynb
+lending_data.csv
+report-template.md
+credit_risk_resampling.ipynb
 README.md
 
 Git must be installed. If using Windows GitBash must be installed.
