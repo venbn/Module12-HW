@@ -57,8 +57,8 @@ Use logistic regression to complete the following steps:
 
 		Calculate the accuracy score of the model.
 
-		![]LRM-BalancedAccuracyModel.png
-
+		![](LRM-BalancedAccuracyModel.png)
+		
 		Generate a confusion matrix.
 
 		Print the classification report.
